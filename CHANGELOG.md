@@ -4,48 +4,73 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
-## Release 3.0.0 - Unity 6, reimagined - 2026/06
+## Release 3.0.0 - Unity 6, reimagined - 2026/06/19
 
 The V3 relaunch brings **full Unity 6 support**, a refreshed brand, and the start of a two-package ecosystem — the proven uGUI library you know, now joined by a modern UI Toolkit companion.
 
 > **Two packages. One ecosystem.** These notes cover the **uGUI** package (`com.unity.uiextensions`). Meet its new companion: [UI Toolkit Extensions](https://github.com/Unity-UI-Extensions/com.unity.uitoolkitextensions).
 
-### Highlights
+To get up to speed with the Unity UI Extensions, check out the [Getting Started](https://unity-ui-extensions.github.io/GettingStarted.html) Page.
 
-- **Full Unity 6 support** — the whole library verified and updated for Unity 6, with legacy dependencies cleared out and the examples refreshed.
-- **Two-package ecosystem** — the new UI Toolkit Extensions package launches alongside under the shared 3.0 banner.
+> Ways to get in touch:
+>
+> - [GitHub Discussions](https://github.com/Unity-UI-Extensions/com.unity.uiextensions/discussions), if you have any questions, queries or suggestions
+> - [Gitter Chat](https://gitter.im/Unity-UI-Extensions/Lobby) site for the UI Extensions project
+>
+> Much easier that posting a question / issue on YouTube, Twitter or Facebook :D
 
 ### Added
 
-- New control: **GridRawImage**
-- New control: **UI Knob 2** (`UI_Knob2`)
-- New control: **UI Segmented Circle** / Segmented Control
-- New control: **UI Graphic Selector**
-- UILineConnector: the pivot can now be used as the reference point when drawing lines (#490)
-- UILineConnector: new "close line" option to finish a line off and fill any gaps at the end
-- BoxSlider: added `SetXWithoutNotify` and `SetYWithoutNotify`
+- Full support for Unity 6, updating all controls and editor components for the new Unity UI framework, including compile flag support for the updated Unity 6 API (#493, #497)
+- Added new GridRawImage control, applying a texture as a repeating grid on a RawImage
+- Added new UI_Knob2 control, an updated take on the rotary UI Knob
+- Added new UISegmentedCircle control, for drawing segmented circular UI
+- Added new UI Graphic Selector control
+- Added SetXWithoutNotify and SetYWithoutNotify methods to the BoxSlider, to set values without firing OnValueChanged (@Kurante2801)
+- The Pivot can now be used as the reference point when drawing lines with the UILineRenderer (#490)
+- Added a "close line" option to the UILineRenderer which finishes the line off with a closer to fill any gaps at the end - Resolves: #449
+- Added a new "CullingMode" option to the UI Particle System that when enabled alters the control to resolve unscaled delta time issues - Fixes #486, #487
 
-### Changed / Fixed
+### Changed
 
-- Reorderable List: fixed a null-reference exception, and resolved element-stacking when moving elements slightly
-- Scroll Snap: resolved a race condition that could raise a NaN error when lerping; made rescaling and full-screen scroll snap more resilient
-- HSS/VSS: guarded against a divide-by-zero when the scroll snap has a single page; `GetCurrentPage` made more resilient
-- Infinite Scroll: resolved out-of-bounds issues
-- Flow Layout Group: addressed layout issues and fixed the last line overflowing the rect bounds
-- UI Particle System: new "CullingMode" option to resolve unscaled delta time (#486 / #487)
-- Gradient2: optimised `ModifyMesh`; fixed radial triangle add order (#384)
-- ScrollRect: force `ScrollRect.content` setup (#485)
-- UILineConnector: improved point-array calculation (#495); refresh on global scale change
-- Layout groups now rebuild on disable/enable
-- General TMPro/Text compatibility housekeeping (#477)
-- Compile-flag support for Unity 6 (#493)
+- fix: Optimized Gradient2 when ModifyMesh is called, and it now responds to gradient key updates in both the inspector and at runtime (@bluefallsky)
+- fix: Corrected the radial triangle add order (#384) (@bluefallsky)
+- fix: The UILineConnector now refreshes when the global scale changes and its point array calculation has been corrected (#495) (@hugoymh)
+- fix: The ReorderableList now keeps an item's rotation configuration while dragging (@JavierMonton)
+- fix: Addressed a null reference exception in the ReorderableList
+- fix: Resolved a stacking issue with the ReorderableList when moving elements "slightly" - Resolves: #470
+- fix: Force ScrollRect.content setup on initialization (#485)
+- fix: Resolved a race condition in the ScrollSnap controls which could raise a NaN error when lerping - Resolves: #452 / #508
+- fix: Patched the HSS/VSS against a potential divide by zero error if the scroll snap has a single page
+- fix: Updated GetCurrentPage on the ScrollSnaps to be more resilient - Fixes #254
+- fix: Updated the ScrollSnaps to be more resilient to rescaling and patched the full screen scroll snap RIF - Fixes #257, #260
+- fix: Resolved out of bounds issues with the Infinite scroll control - Fixes #237
+- fix: Addressed layout issues with the FlowLayoutGroup - Fixes #456
+- Layout groups updated to rebuild on disable/enable - Resolves: #468
+- Updated the UIVertical Scroller to be more efficient for Unity 6 and updated its example
+- Updated the Picker control and samples to the latest version
+- Removed cap points from the line renderers as they caused LOD and jagged-texture issues
+- Renamed Segment to SegmentedControlSegment to avoid class name conflicts
+- Updated components to maintain both Text and TextMeshPro compatibility where possible, including a debug option to allow both (#477)
+- Reverted Curly Text back to the old Text component as it is not compatible with TextMeshPro - alternatives are being investigated
 
-### Contributors
+### Deprecated
 
-Huge thanks to everyone who contributed to this release:
-[@SimonDarksideJ](https://github.com/SimonDarksideJ), [@bluefallsky](https://github.com/bluefallsky), [@hugoymh](https://github.com/hugoymh), [@JavierMonton](https://github.com/JavierMonton), [@Dover8](https://github.com/Dover8), [@fgrg2801](https://github.com/fgrg2801), [@Moderbord](https://github.com/Moderbord).
+- With the move to Unity 6, the old legacy Text based controls have been cleared out as they are no longer valid, along with a general script clean-up to remove legacy dependencies.  For any affected component, use the TextMeshPro alternatives.
 
------
+## Additional Notes
+
+### [Installation Instructions](https://unity-ui-extensions.github.io/UPMInstallation.html)
+
+The recommended way to add the Unity UI Extensions project to your solution is to use the Unity package Manager. Simply use the Unity Package Manager to reference the project to install it
+
+New for 2020, we have added OpenUPM support and the package can be installed using the following [OpenUPM CLI](https://openupm.com/docs/) command:
+
+```cli
+`openupm add com.unity.uiextensions`
+```
+
+> For more details on using [OpenUPM CLI, check the docs here](https://github.com/openupm/openupm-cli#installation).
 
 ## Release 2.3.2 - Rejuvenation - 2023/11/26
 
@@ -70,11 +95,11 @@ For customers upgrading from earlier versions of Unity to Unity 2020, please be 
 
 For more details, see the [deprecation notice](https://github.com/Unity-UI-Extensions/com.unity.uiextensions/discussions/428) on GitHub.
 
-## Added
+### Added
 
 - Add CalculatePointOnCurve for uilinerenderer (@victornor)
 
-## Changed
+### Changed
 
 - fix: Fixed an null reference exception with the ResetSelectableHighlight (@FejZa)
 - fix: Resolved an issue where the last line in a flow layout group would overflow the rect bounds.
@@ -86,7 +111,7 @@ For more details, see the [deprecation notice](https://github.com/Unity-UI-Exten
 - Added extra event on the AutoCompleteComboBox, to fire when an item in the list is selected, with its display name.
 - FlowLayoutGroup components updated to latest (likely the last as the author has stopped development)
 
-## Deprecated
+### Deprecated
 
 - All deprecated Text based components now have "obsolete" tags, to avoid breaking code.  Note, these do not function in 2022 and above, as Unity have "changed" things.  For any affected component, I recommend updating to use TextMeshPro native features.
 
